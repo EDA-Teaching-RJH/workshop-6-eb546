@@ -5,9 +5,9 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-#define MAX_FILENAME_LENGTH 100
-#define MAX_PATH_LENGTH 1024
-#define MAX_CONTENT_LENGTH 1000
+#define MAX_FILENAME_LENGTH 200
+#define MAX_PATH_LENGTH 1030
+#define MAX_CONTENT_LENGTH 10000
 
 char currentDirectory[MAX_PATH_LENGTH];
 
