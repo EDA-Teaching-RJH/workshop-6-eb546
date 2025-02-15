@@ -6,11 +6,17 @@
 #include <unistd.h>
 #include <errno.h>
 #include <stdint.h>
+#include <arpa/inet.h>
+#include <netinet/in.h>
+#include <sys/socket.h>
 
 #define MAX_FILENAME_LENGTH 100
 #define MAX_PATH_LENGTH 1024
 #define MAX_CONTENT_LENGTH 1000
 #define CRC32_POLYNOMIAL 0xEDB88320L
+#define SERVER_IP "127.0.0.1"
+#define SERVER_PORT 8080
+#define BUFFER_SIZE 1024
 
 char currentDirectory[MAX_PATH_LENGTH];
 
@@ -176,6 +182,160 @@ void createDirectory(const char *dirname) {
     }
 }
 
+// Function to send a file over a network
+void sendFile(const char *filename, const char *serverIP, int port) {
+    int sockfd;
+    struct sockaddr_in serverAddr;
+    FILE *file;
+    char buffer[BUFFER_SIZE];
+    ssize_t bytesRead, bytesSent;
+
+    // Create socket
+    sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    if (sockfd < 0) {
+        perror("Error creating socket");
+        return;
+    }
+
+    // Configure server address
+    memset(&serverAddr, 0, sizeof(serverAddr));
+    serverAddr.sin_family = AF_INET;
+    serverAddr.sin_port = htons(port);
+    if (inet_pton(AF_INET, serverIP, &serverAddr.sin_addr) <= 0) {
+        perror("Invalid address/Address not supported");
+        close(sockfd);
+        return;
+    }
+
+    // Connect to server
+    if (connect(sockfd, (struct sockaddr *)&serverAddr, sizeof(serverAddr)) < 0) {
+        perror("Connection failed");
+        close(sockfd);
+        return;
+    }
+
+    // Open file
+    file = fopen(filename, "rb");
+    if (file == NULL) {
+        perror("Error opening file");
+        close(sockfd);
+        return;
+    }
+
+    // Send file data
+    while ((bytesRead = fread(buffer, 1, BUFFER_SIZE, file)) > 0) {
+        bytesSent = send(sockfd, buffer, bytesRead, 0);
+        if (bytesSent < 0) {
+            perror("Error sending file");
+            break;
+        }
+    }
+
+    fclose(file);
+    close(sockfd);
+    printf("File '%s' sent successfully.\n", filename);
+}
+
+// Function to receive a file over a network
+void receiveFile(const char *filename, int port) {
+    int sockfd, newsockfd;
+    struct sockaddr_in serverAddr, clientAddr;
+    socklen_t addrLen = sizeof(clientAddr);
+    FILE *file;
+    char buffer[BUFFER_SIZE];
+    ssize_t bytesReceived;
+
+    // Create socket
+    sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    if (sockfd < 0) {
+        perror("Error creating socket");
+        return;
+    }
+
+    // Configure server address
+    memset(&serverAddr, 0, sizeof(serverAddr));
+    serverAddr.sin_family = AF_INET;
+    serverAddr.sin_port = htons(port);
+    serverAddr.sin_addr.s_addr = INADDR_ANY;
+
+    // Bind socket
+    if (bind(sockfd, (struct sockaddr *)&serverAddr, sizeof(serverAddr)) < 0) {
+        perror("Binding failed");
+        close(sockfd);
+        return;
+    }
+
+    // Listen for connections
+    if (listen(sockfd, 1) < 0) {
+        perror("Listen failed");
+        close(sockfd);
+        return;
+    }
+
+    printf("Waiting for incoming connections...\n");
+
+    // Accept connection
+    newsockfd = accept(sockfd, (struct sockaddr *)&clientAddr, &addrLen);
+    if (newsockfd < 0) {
+        perror("Accept failed");
+        close(sockfd);
+        return;
+    }
+
+    // Open file
+    file = fopen(filename, "wb");
+    if (file == NULL) {
+        perror("Error creating file");
+        close(newsockfd);
+        close(sockfd);
+        return;
+    }
+
+    // Receive file data
+    while ((bytesReceived = recv(newsockfd, buffer, BUFFER_SIZE, 0)) > 0) {
+        fwrite(buffer, 1, bytesReceived, file);
+    }
+
+    fclose(file);
+    close(newsockfd);
+    close(sockfd);
+    printf("File '%s' received successfully.\n", filename);
+}
+
+// Function to keep receiving files on the server
+void startServer(int port) {
+    while (1) {
+        printf("\nServer is waiting for files...\n");
+        char filename[MAX_FILENAME_LENGTH];
+        printf("Enter filename to save received file (or 'exit' to stop): ");
+        scanf("%s", filename);
+
+        if (strcmp(filename, "exit") == 0) {
+            printf("Server shutting down...\n");
+            break;
+        }
+
+        receiveFile(filename, port);
+    }
+}
+
+// Function to keep sending files from the client
+void startClient(const char *serverIP, int port) {
+    while (1) {
+        printf("\nClient is ready to send files...\n");
+        char filename[MAX_FILENAME_LENGTH];
+        printf("Enter filename to send (or 'exit' to stop): ");
+        scanf("%s", filename);
+
+        if (strcmp(filename, "exit") == 0) {
+            printf("Client shutting down...\n");
+            break;
+        }
+
+        sendFile(filename, serverIP, port);
+    }
+}
+
 int main() {
     int choice;
     char filename[MAX_FILENAME_LENGTH];
@@ -197,7 +357,9 @@ int main() {
         printf("7. Change Directory\n");
         printf("8. Create Directory\n");
         printf("9. Compare Files (CRC32)\n");
-        printf("10. Exit\n");
+        printf("10. Start Server (Receive Files)\n");
+        printf("11. Start Client (Send Files)\n");
+        printf("12. Exit\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
 
@@ -269,6 +431,14 @@ int main() {
                 break;
 
             case 10:
+                startServer(SERVER_PORT);
+                break;
+
+            case 11:
+                startClient(SERVER_IP, SERVER_PORT);
+                break;
+
+            case 12:
                 printf("Exiting...\n");
                 exit(0);
 
@@ -279,4 +449,5 @@ int main() {
 
     return 0;
 }
+
 
