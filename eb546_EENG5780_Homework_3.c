@@ -110,10 +110,10 @@ void CopyFile(const char *sourcefilename, const char *destfilename)
         return;
     }
 
-    char Ch;
-    while ((Ch = fgetsc(sourcefile)) != EOF)
+    char ch;
+    while ((ch = fgetsc(sourcefile)) != EOF)
     {
-        fputc(Ch, destfile);
+        fputc(ch, destfile);
     }
     fclose(sourcefile);
     fclose(destfile);
