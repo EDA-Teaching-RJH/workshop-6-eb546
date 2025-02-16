@@ -36,7 +36,7 @@ void CreateFile(const char *filename, const char *content)
 
     fprintf(file, "%s", content);
     fclose(file);
-    printf("File '%s' created successfully. \n", filename);
+    printf("\nFile '%s' created successfully. \n", filename);
 
 }
 
@@ -53,7 +53,7 @@ void AppendFile(const char *filename, const char *content)
     }
     fprintf(file, "%s", content);
     fclose(file);
-    printf("Content appended to '%s' successfully.\n", filename);
+    printf("\nContent appended to '%s' successfully.\n", filename);
 }
 
 void CopyFile(const char *sourcefilename, const char *destfilename)
@@ -84,7 +84,7 @@ void CopyFile(const char *sourcefilename, const char *destfilename)
     }
     fclose(sourcefile);
     fclose(destfile);
-    printf("File '%s' copied to '%s' successfully.\n", sourcefilename, destfilename);
+    printf("\nFile '%s' copied to '%s' successfully.\n", sourcefilename, destfilename);
 
 }
 
@@ -95,7 +95,7 @@ void DeleteFile(const char *filename)
 
     if (remove(FilePath) == 0)
     {
-        printf("File '%s' deleted successfully.\n", filename);
+        printf("\nFile '%s' deleted successfully.\n", filename);
 
     } else
     {
@@ -121,7 +121,7 @@ void ReadFile(const char *filename)
         putchar(ch);
     }
     fclose(file);
-    printf("File '%s' read successfully.\n", filename);
+    printf("\nFile '%s' read successfully.\n", filename);
 }
 
 void ListDirectory()
@@ -135,7 +135,7 @@ void ListDirectory()
         perror("Error opening directory!");
         return;
     }
-    printf("Contents of '%s':\n", CurrentDirectory);
+    printf("\nContents of '%s':\n", CurrentDirectory);
     while ((entry = readdir(dir)) != NULL)
     {
         printf("%s\n", entry->d_name);
@@ -151,7 +151,7 @@ void ChangeDirectory(const char *dirname)
     if(chdir(NewPath) == 0)
     {
         getcwd(CurrentDirectory, sizeof(CurrentDirectory));
-        printf("Changed directory to '%s'\n", CurrentDirectory);
+        printf("\nChanged directory to '%s'\n", CurrentDirectory);
     } else
     {
         perror("Error changing directory!");
@@ -165,7 +165,7 @@ void CreateDirectory(const char *dirname)
 
     if(mkdir(DirPath, 0777) == 0)
     {
-        printf("Directory '%s' created successfully.\n", dirname);
+        printf("\nDirectory '%s' created successfully.\n", dirname);
     }else
     {
         perror("Error creating directory!");
@@ -413,10 +413,10 @@ int main()
         printf("2. Append File\n");
         printf("3. Copy File\n");
         printf("4. Delete File\n");
-        printf("5. Read FIle\n");
+        printf("5. Read File\n");
         printf("6. List of Directories\n");
-        printf("7. Change Directory\n");
-        printf("8. Create Directory\n");
+        printf("7. Change Current Directory Name\n");
+        printf("8. Create New Directory\n");
         printf("9. Compare Files (CRC32 Checker)\n");
         printf("10. Start Client (Send Files)\n");
         printf("11. Start Server (Receive Files)\n");
