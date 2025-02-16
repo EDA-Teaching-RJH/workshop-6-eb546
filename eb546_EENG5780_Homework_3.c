@@ -111,7 +111,7 @@ void CopyFile(const char *sourcefilename, const char *destfilename)
     }
 
     char ch;
-    while ((ch = fgetsc(sourcefile)) != EOF)
+    while ((ch = fgetc(sourcefile)) != EOF)
     {
         fputc(ch, destfile);
     }
@@ -149,7 +149,7 @@ void ReadFile(const char *filename)
     }
 
     char ch;
-    while((ch = fgetsc(file)) != EOF)
+    while((ch = fgetc(file)) != EOF)
     {
         putchar(ch);
     }
