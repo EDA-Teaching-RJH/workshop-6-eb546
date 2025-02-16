@@ -10,6 +10,8 @@
 #include <netinet/in.h>
 #include <sys/socket.h>
 
+#define Max_Username_Length 50
+#define Max_Password_Langth 50
 #define Max_Filename_Length 100
 #define Max_Path_Length 1024
 #define Max_Content_Length 1000
@@ -352,8 +354,49 @@ void StartServer(int port)
     }
 }
 
+int Authenticator()
+{
+    char Username[Max_Username_Length];
+    char Password[Max_Password_Langth];
+    char FileUsername[Max_Username_Length];
+    char FilePassword[Max_Password_Langth];
+    FILE *file;
+
+    printf("Enter your username: ");
+    scanf("%s", Username);
+
+    printf("Enter your password: ");
+    scanf("%s", Password);
+
+    file = fopen("sample.txt", "r");
+    if (file == NULL)
+    {
+        perror("Error opening user file!");
+        return 0;
+    }
+
+    while (fscanf(file, "%s %s", FileUsername, FilePassword) != EOF)
+    {
+        if (strcmp(Username, FileUsername) == 0 && strcmp(Password, FilePassword) == 0)
+        {
+            fclose(file);
+            return 1;
+        }
+    }
+
+    fclose(file);
+    return 0;
+}
+
 int main()
 {
+    if (!Authenticator())
+    {
+        printf("User Authentication failed. Exiting Program\n");
+        return 1;
+    }
+    printf("Authentication Successful!\n");
+
     int Choice;
     char FileName[Max_Filename_Length];
     char DestFileName[Max_Filename_Length];
@@ -366,7 +409,7 @@ int main()
     {
         printf("\nFile Management System Program - Current Directory: %s\n", CurrentDirectory);
 
-        printf("1. Create File\n");
+        printf("\n1. Create File\n");
         printf("2. Append File\n");
         printf("3. Copy File\n");
         printf("4. Delete File\n");
@@ -378,95 +421,95 @@ int main()
         printf("10. Start Client (Send Files)\n");
         printf("11. Start Server (Receive Files)\n");
         printf("12. Exit\n");
-        printf("Enter a number or choice: ");
+        printf("\nEnter a number or choice (1-12): ");
         scanf("%d", &Choice);
 
         switch (Choice)
         {
             case 1:
-            printf("Enter file type to create (e.g., file.txt, file.bin, file.csv, file.json, file.c): ");
-            scanf("%s", FileName);
-            printf("Enter content(s) inside: ");
-            getchar();
-            fgets(Content, Max_Content_Length, stdin);
-            CreateFile(FileName, Content);
-            break;
+                printf("Enter file type to create (e.g., file.txt, file.bin, file.csv, file.json, file.c): ");
+                scanf("%s", FileName);
+                printf("Enter content(s) inside: ");
+                getchar();
+                fgets(Content, Max_Content_Length, stdin);
+                CreateFile(FileName, Content);
+                break;
 
             case 2:
-            printf("Enter the name of the file: ");
-            scanf("%s", FileName);
-            printf("Enter content(s) to append inside: ");
-            getchar();
-            fgets(Content, Max_Content_Length, stdin);
-            AppendFile(FileName, Content);
-            break;
+                printf("Enter the name of the file: ");
+                scanf("%s", FileName);
+                printf("Enter content(s) to append inside: ");
+                getchar();
+                fgets(Content, Max_Content_Length, stdin);
+                AppendFile(FileName, Content);
+                break;
 
             case 3:
-            printf("Enter a source filename to copy: ");
-            scanf("%s", FileName);
-            printf("Enter destination filename to paste: ");
-            scanf("%s", DestFileName);
-            CopyFile(FileName, DestFileName);
-            break;
+                printf("Enter a source filename to copy: ");
+                scanf("%s", FileName);
+                printf("Enter destination filename to paste: ");
+                scanf("%s", DestFileName);
+                CopyFile(FileName, DestFileName);
+                break;
 
             case 4:
-            printf("Enter a filename to delete: ");
-            scanf("%s", FileName);
-            DeleteFile(FileName);
-            break;
+                printf("Enter a filename to delete: ");
+                scanf("%s", FileName);
+                DeleteFile(FileName);
+                break;
 
             case 5:
-            printf("Enter a filename to read: ");
-            scanf("%s", FileName);
-            ReadFile(FileName);
-            break;
+                printf("Enter a filename to read: ");
+                scanf("%s", FileName);
+                ReadFile(FileName);
+                break;
 
             case 6:
-            ListDirectory();
-            break;
+                ListDirectory();
+                break;
 
             case 7:
-            printf("Enter a directory name to change: ");
-            scanf("%s", DirName);
-            ChangeDirectory(DirName);
-            break;
+                printf("Enter a directory name to change: ");
+                scanf("%s", DirName);
+                ChangeDirectory(DirName);
+                break;
 
             case 8:
-            printf("Enter a new directory name to create: ");
-            scanf("%s", DirName);
-            CreateDirectory(DirName);
-            break;
+                printf("Enter a new directory name to create: ");
+                scanf("%s", DirName);
+                CreateDirectory(DirName);
+                break;
 
             case 9:
-            printf("Enter the first filename: ");
-            scanf("%s", FileName);
-            printf("Enter the second filename to compare: ");
-            scanf("%s", DestFileName);
+                printf("Enter the first filename: ");
+                scanf("%s", FileName);
+                printf("Enter the second filename to compare: ");
+                scanf("%s", DestFileName);
             
-            if(compare_files_crc(FileName, DestFileName))
-            {
-                printf("Files are identical.\n");
-            } 
-            else
-            {
-                printf("Files are different.\n");
-            }
-            break;
+                if(compare_files_crc(FileName, DestFileName))
+                {
+                    printf("Files are identical.\n");
+                } 
+                else
+                {
+                    printf("Files are different.\n");
+                }
+                break;
 
             case 10:
-            StartServer(Server_Port);
-            break;
+                StartServer(Server_Port);
+                break;
 
             case 11:
-            StartClient(Server_IP, Server_Port);
-            break;
+                StartClient(Server_IP, Server_Port);
+                break;
 
             case 12:
-            printf("Exiting Program\n");
-            exit(0);
+                printf("Exiting Program\n");
+                exit(0);
 
             default:
-            printf("Invalid number or choice! Please try again.\n");
+                printf("Invalid number or choice! Please try again.\n");
 
         }
 
