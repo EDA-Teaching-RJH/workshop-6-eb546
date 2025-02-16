@@ -20,41 +20,6 @@
 
 char CurrentDirectory[Max_Path_Length];
 
-uint32_t calculate_crc32(const char* filename) {
-    FILE* file = fopen(filename, "rb");
-    if (file == NULL) {
-        perror("Error opening file for CRC32 calculation");
-        return 0;
-    }
-
-    uint32_t crc = 0xFFFFFFFF;
-    int ch;
-    while ((ch = fgetc(file)) != EOF) {
-        crc ^= ch;
-        for (int i = 0; i < 8; i++) {
-            if (crc & 1) {
-                crc = (crc >> 1) ^ CRC32_Polynomial;
-            } else {
-                crc = crc >> 1;
-            }
-        }
-    }
-    fclose(file);
-    return crc;
-}
-
-// Function to compare two files using CRC32
-int compare_files_crc(const char* file1, const char* file2) {
-    uint32_t crc1 = calculate_crc32(file1);
-    uint32_t crc2 = calculate_crc32(file2);
-
-    if (crc1 == 0 || crc2 == 0) {
-        printf("Error calculating CRC32 checksum.\n");
-        return 0;
-    }
-
-    return (crc1 == crc2);
-}
 
 void CreateFile(const char *filename, const char *content)
 {
@@ -203,6 +168,41 @@ void CreateDirectory(const char *dirname)
     {
         perror("Error creating directory!");
     }
+}
+
+uint32_t calculate_crc32(const char* filename) {
+    FILE* file = fopen(filename, "rb");
+    if (file == NULL) {
+        perror("Error opening file for CRC32 calculation");
+        return 0;
+    }
+
+    uint32_t crc = 0xFFFFFFFF;
+    int ch;
+    while ((ch = fgetc(file)) != EOF) {
+        crc ^= ch;
+        for (int i = 0; i < 8; i++) {
+            if (crc & 1) {
+                crc = (crc >> 1) ^ CRC32_Polynomial;
+            } else {
+                crc = crc >> 1;
+            }
+        }
+    }
+    fclose(file);
+    return crc;
+}
+
+int compare_files_crc(const char* file1, const char* file2) {
+    uint32_t crc1 = calculate_crc32(file1);
+    uint32_t crc2 = calculate_crc32(file2);
+
+    if (crc1 == 0 || crc2 == 0) {
+        printf("Error calculating CRC32 checksum.\n");
+        return 0;
+    }
+
+    return (crc1 == crc2);
 }
 
 void SendFile(const char *filename, const char *serverip, int port)
