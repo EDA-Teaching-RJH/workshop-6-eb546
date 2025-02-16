@@ -364,7 +364,7 @@ int main()
 
     while(1)
     {
-        printf("\nFile Management System - Current Directory: %s\n", CurrentDirectory);
+        printf("\nFile Management System Program - Current Directory: %s\n", CurrentDirectory);
 
         printf("1. Create File\n");
         printf("2. Append File\n");
