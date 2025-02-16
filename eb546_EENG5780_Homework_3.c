@@ -49,7 +49,7 @@ void AppendFile(const char *filename, const char *content)
         perror("Error opening file!");
         return;
     }
-    printf(file, "%s", content);
+    fprintf(file, "%s", content);
     fclose(file);
     printf("Content appended to '%s' successfully.\n", filename);
 }
