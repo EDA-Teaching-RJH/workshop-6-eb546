@@ -231,7 +231,7 @@ void SendFile(const char *filename, const char *serverip, int port)
         return;
     }
 
-    if (connect(SockFD, (struct SockAddr *)&ServerAddr, sizeof(ServerAddr)) < 0)
+    if (connect(SockFD, (struct sockaddr *)&ServerAddr, sizeof(ServerAddr)) < 0)
     {
         perror("Connection failed!");
         close(SockFD);
