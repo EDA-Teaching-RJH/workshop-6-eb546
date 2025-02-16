@@ -314,7 +314,7 @@ void ReceiveFile(const char *filename, int port)
     printf("File '%s' received succesfully.\n", filename);
 }
 
-void StartClient(const char *ServerIP, int Port)
+void StartClient(const char *serverip, int port)
 {
     while(1)
     {
@@ -329,7 +329,7 @@ void StartClient(const char *ServerIP, int Port)
             break;
         }
 
-        SendFile(FileName, ServerIP, Port);
+        SendFile(FileName, serverip, port);
     }
 }
 
