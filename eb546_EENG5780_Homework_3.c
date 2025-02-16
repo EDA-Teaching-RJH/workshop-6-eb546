@@ -148,10 +148,10 @@ void ReadFile(const char *filename)
         return;
     }
 
-    char Ch;
-    while((Ch = fgetc(file)) != EOF)
+    char ch;
+    while((ch = fgetsc(file)) != EOF)
     {
-        putchar(Ch);
+        putchar(ch);
     }
     fclose(file);
     printf("File '%s' read successfully.\n", filename);
@@ -160,7 +160,7 @@ void ReadFile(const char *filename)
 void ListDirectory()
 {
     DIR *dir;
-    struct Dirent *entry;
+    struct dirent *entry;
 
     dir = opendir(CurrentDirectory);
     if (dir == NULL)
@@ -171,7 +171,7 @@ void ListDirectory()
     printf("Contents of '%s':\n", CurrentDirectory);
     while ((entry = readdir(dir)) != NULL)
     {
-        printf("%s\n", entry);
+        printf("%s\n", entry->d_name);
     }
     closedir(dir);
 }
