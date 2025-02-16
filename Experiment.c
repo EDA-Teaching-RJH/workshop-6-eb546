@@ -351,7 +351,7 @@ int authenticateUser() {
     printf("Enter password: ");
     scanf("%s", password);
 
-    file = fopen("user.txt", "r");
+    file = fopen("sample.txt", "r");
     if (file == NULL) {
         perror("Error opening user file");
         return 0;
