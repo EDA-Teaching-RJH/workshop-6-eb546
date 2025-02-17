@@ -1,28 +1,28 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <dirent.h>
-#include <sys/stat.h>
-#include <unistd.h>
-#include <errno.h>
-#include <stdint.h>
-#include <arpa/inet.h>
-#include <netinet/in.h>
-#include <sys/socket.h>
+#include <stdio.h> //Includes the standard input/output header file
+#include <stdlib.h> //Includes the standard library header file for declaring programming tasks and functions
+#include <string.h> //Includes functions mainly for manipulating strings and memory blocks
+#include <dirent.h> //Includes functions for working with directory operations
+#include <sys/stat.h> //Includes functions for acquiring file metadata informations
+#include <unistd.h> //Includes operating system API functions, like low level operations
+#include <errno.h> //Includes error reporting functions in the system
+#include <stdint.h> //Includes integer types with specific widths
+#include <arpa/inet.h> //Includes functions for IP address and netwoek manipulations
+#include <netinet/in.h> //Includes defining internet addresses and sockets
+#include <sys/socket.h> //Includes functions for working with sockets
 
-#define Max_Username_Length 50
-#define Max_Password_Langth 50
-#define Max_Filename_Length 100
-#define Max_Path_Length 1024
-#define Max_Content_Length 1000
-#define CRC32_Polynomial 0xEDB88320L
-#define Server_IP "127.0.0.1"
-#define Server_Port 8080
-#define Buffer_Size 1024
+#define Max_Username_Length 50 //Defines the maximum number of characters' size for username
+#define Max_Password_Langth 50 //Defines the maximum number of characters' size for password
+#define Max_Filename_Length 100 //Defines the maximum number of characters' size for filename
+#define Max_Path_Length 1024 //Defines the maximum number of characters' size for file path
+#define Max_Content_Length 1000 //Defines the maximum number of characters' size for content
+#define CRC32_Polynomial 0xEDB88320L //Defines the polynomial for CRC32 checker for error detections
+#define Server_IP "127.0.0.1" //Defines the IP address of the server for networking
+#define Server_Port 8080 //Defines the port number by the server within the machine itself
+#define Buffer_Size 1024 //Defines the maximum number of the buffer's size 
 
-char CurrentDirectory[Max_Path_Length];
+char CurrentDirectory[Max_Path_Length]; //Defines the current directory name with a maxmimum number of length for file path
 
-
+//This void function creates a new file with a specified file type and contents to be written
 void CreateFile(const char *filename, const char *content)
 {
     char FilePath[Max_Path_Length];
@@ -40,6 +40,7 @@ void CreateFile(const char *filename, const char *content)
 
 }
 
+//This void function allows to append or add contents to the existing file(s) in the current directory
 void AppendFile(const char *filename, const char *content)
 {
     char FilePath[Max_Path_Length];
@@ -56,6 +57,7 @@ void AppendFile(const char *filename, const char *content)
     printf("\nContent appended to '%s' successfully.\n", filename);
 }
 
+//This void function allows to copy the contents from one file to paste to another
 void CopyFile(const char *sourcefilename, const char *destfilename)
 {
     char SourcePath[Max_Path_Length], DestPath[Max_Path_Length];
@@ -88,6 +90,7 @@ void CopyFile(const char *sourcefilename, const char *destfilename)
 
 }
 
+//This function allows to delete any existing files in the current directory
 void DeleteFile(const char *filename)
 {
     char FilePath[Max_Path_Length];
@@ -103,6 +106,7 @@ void DeleteFile(const char *filename)
     }
 }
 
+//This function allows to read the contents from any files within the current directory
 void ReadFile(const char *filename)
 {
     char FilePath[Max_Path_Length];
@@ -124,6 +128,7 @@ void ReadFile(const char *filename)
     printf("\nFile '%s' read successfully.\n", filename);
 }
 
+//This function allows to lists all the files within the directory's explorer
 void ListDirectory()
 {
     DIR *dir;
@@ -143,6 +148,7 @@ void ListDirectory()
     closedir(dir);
 }
 
+//This function allows to change the name of the current directory
 void ChangeDirectory(const char *dirname)
 {
     char NewPath[Max_Path_Length];
@@ -158,6 +164,7 @@ void ChangeDirectory(const char *dirname)
     }
 }
 
+//This function alloww to create a new directory
 void CreateDirectory(const char *dirname)
 {
     char DirPath[Max_Path_Length];
@@ -172,6 +179,7 @@ void CreateDirectory(const char *dirname)
     }
 }
 
+//This function adds the CRC32 checker to compare files of their validity
 uint32_t calculate_crc32(const char* filename) {
     FILE* file = fopen(filename, "rb");
     if (file == NULL) {
@@ -195,6 +203,7 @@ uint32_t calculate_crc32(const char* filename) {
     return crc;
 }
 
+//This function combines with CRC32 checker in order to completely verify the entire system operations
 int compare_files_crc(const char* file1, const char* file2) {
     uint32_t crc1 = calculate_crc32(file1);
     uint32_t crc2 = calculate_crc32(file2);
@@ -207,6 +216,7 @@ int compare_files_crc(const char* file1, const char* file2) {
     return (crc1 == crc2);
 }
 
+//This function allows the client to send files to the server for networking
 void SendFile(const char *filename, const char *serverip, int port)
 {
     int SockFD;
@@ -260,6 +270,7 @@ void SendFile(const char *filename, const char *serverip, int port)
     printf("File '%s' send successfully.\n", filename);
 }
 
+//This function allows for the server to receive files from the client for networking
 void ReceiveFile(const char *filename, int port)
 {
     int SockFD, NewSockFD;
@@ -316,6 +327,7 @@ void ReceiveFile(const char *filename, int port)
     printf("File '%s' received succesfully.\n", filename);
 }
 
+//This function allows to start the client process to transfer files to the server's IP adress and port
 void StartClient(const char *serverip, int port)
 {
     while(1)
@@ -335,6 +347,7 @@ void StartClient(const char *serverip, int port)
     }
 }
 
+//This function allows to start the server process to receive the file
 void StartServer(int port)
 {
     while(1)
