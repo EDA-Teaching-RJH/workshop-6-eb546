@@ -1,3 +1,4 @@
+
 #include <stdio.h> //Includes the standard input/output header file
 #include <stdlib.h> //Includes the standard library header file for declaring programming tasks and functions
 #include <string.h> //Includes functions mainly for manipulating strings and memory blocks
@@ -13,21 +14,23 @@
 #define Max_Username_Length 50 //Defines the maximum number of characters' size for username
 #define Max_Password_Langth 50 //Defines the maximum number of characters' size for password
 #define Max_Filename_Length 100 //Defines the maximum number of characters' size for filename
-#define Max_Path_Length 1024 //Defines the maximum number of characters' size for file path
+#define Max_Path_Length 1050 //Defines the maximum number of characters' size for file path
 #define Max_Content_Length 1000 //Defines the maximum number of characters' size for content
 #define CRC32_Polynomial 0xEDB88320L //Defines the polynomial for CRC32 checker for error detections
 #define Server_IP "127.0.0.1" //Defines the IP address of the server for networking
 #define Server_Port 8080 //Defines the port number by the server within the machine itself
-#define Buffer_Size 1024 //Defines the maximum number of the buffer's size 
+#define Buffer_Size 1050 //Defines the maximum number of the buffer's size 
 
 char CurrentDirectory[Max_Path_Length]; //Defines the current directory name with a maxmimum number of length for file path
 
-//This void function creates a new file with a specified file type and contents to be written
+//This void function creates a new file with a specified file type and contents to be written inside
 void CreateFile(const char *filename, const char *content)
 {
+    //Almost all void functions have this inner function with similar format to execute file system
     char FilePath[Max_Path_Length];
     snprintf(FilePath, sizeof(FilePath), "%s/%s", CurrentDirectory, filename);
 
+    //Has a FILE pointer to open files by "w" or write access mode
     FILE *file = fopen(FilePath, "w");
     if (file == NULL) {
         perror("Error creating file!");
@@ -40,12 +43,13 @@ void CreateFile(const char *filename, const char *content)
 
 }
 
-//This void function allows to append or add contents to the existing file(s) in the current directory
+//This void function allows to append or add contents into the existing file(s) in the current directory
 void AppendFile(const char *filename, const char *content)
 {
     char FilePath[Max_Path_Length];
     snprintf(FilePath, sizeof(FilePath), "%s/%s", CurrentDirectory, filename);
 
+    //Has a FILE pointer to open files by "a" or append access mode
     FILE *file = fopen(FilePath, "a");
     if (file == NULL)
     {
@@ -64,6 +68,7 @@ void CopyFile(const char *sourcefilename, const char *destfilename)
     snprintf(SourcePath, sizeof(SourcePath), "%s/%s", CurrentDirectory, sourcefilename);
     snprintf(DestPath, sizeof(DestPath), "%s/%s", CurrentDirectory, destfilename);
 
+    //Has a FILE pointer to open files by "r" or read access mode
     FILE *sourcefile = fopen(SourcePath, "r");
     if (sourcefile == NULL)
     {
@@ -71,6 +76,7 @@ void CopyFile(const char *sourcefilename, const char *destfilename)
         return;
     }
 
+    //Has a FILE pointer to open files by "w" or write access mode
     FILE *destfile = fopen(DestPath, "w");
     if (destfile == NULL)
     {
@@ -90,28 +96,13 @@ void CopyFile(const char *sourcefilename, const char *destfilename)
 
 }
 
-//This function allows to delete any existing files in the current directory
-void DeleteFile(const char *filename)
-{
-    char FilePath[Max_Path_Length];
-    snprintf(FilePath, sizeof(FilePath), "%s/%s", CurrentDirectory, filename);
-
-    if (remove(FilePath) == 0)
-    {
-        printf("\nFile '%s' deleted successfully.\n", filename);
-
-    } else
-    {
-        perror("Error deleting file!");
-    }
-}
-
 //This function allows to read the contents from any files within the current directory
 void ReadFile(const char *filename)
 {
     char FilePath[Max_Path_Length];
     snprintf(FilePath, sizeof(FilePath), "%s/%s", CurrentDirectory, filename);
 
+    //Has a FILE pointer to open files by "r" or read access mode
     FILE *file =fopen(FilePath, "r");
     if (file == NULL)
     {
@@ -128,8 +119,25 @@ void ReadFile(const char *filename)
     printf("\nFile '%s' read successfully.\n", filename);
 }
 
-//This function allows to lists all the files within the directory's explorer
-void ListDirectory()
+//This function allows to delete any existing files in the current directory
+void DeleteFile(const char *filename)
+{
+    char FilePath[Max_Path_Length];
+    snprintf(FilePath, sizeof(FilePath), "%s/%s", CurrentDirectory, filename);
+
+    if (remove(FilePath) == 0)
+    {
+        printf("\nFile '%s' deleted successfully.\n", filename);
+
+    } else
+    {
+        perror("Error deleting file!");
+    }
+}
+
+
+//This function allows to lists all the files contained within the directory's explorer
+void ListContents()
 {
     DIR *dir;
     struct dirent *entry;
@@ -140,15 +148,30 @@ void ListDirectory()
         perror("Error opening directory!");
         return;
     }
-    printf("\nContents of '%s':\n", CurrentDirectory);
+    printf("\nFile Contents of '%s':\n", CurrentDirectory);
     while ((entry = readdir(dir)) != NULL)
     {
-        printf("%s\n", entry->d_name);
+        printf("\n|%s|\n", entry->d_name);
     }
     closedir(dir);
 }
 
-//This function allows to change the name of the current directory
+//This function alloww to create a new directory of codespace
+void CreateDirectory(const char *dirname)
+{
+    char DirPath[Max_Path_Length];
+    snprintf(DirPath, sizeof(DirPath), "%s/%s", CurrentDirectory, dirname);
+
+    if(mkdir(DirPath, 0777) == 0)
+    {
+        printf("\nDirectory '%s' created successfully.\n", dirname);
+    }else
+    {
+        perror("Error creating directory!");
+    }
+}
+
+//This function allows to change the name of the current directory of codespace
 void ChangeDirectory(const char *dirname)
 {
     char NewPath[Max_Path_Length];
@@ -164,23 +187,10 @@ void ChangeDirectory(const char *dirname)
     }
 }
 
-//This function alloww to create a new directory
-void CreateDirectory(const char *dirname)
-{
-    char DirPath[Max_Path_Length];
-    snprintf(DirPath, sizeof(DirPath), "%s/%s", CurrentDirectory, dirname);
-
-    if(mkdir(DirPath, 0777) == 0)
-    {
-        printf("\nDirectory '%s' created successfully.\n", dirname);
-    }else
-    {
-        perror("Error creating directory!");
-    }
-}
-
 //This function adds the CRC32 checker to compare files of their validity
 uint32_t calculate_crc32(const char* filename) {
+    
+    //Has a FILE pointer to open files by "rb" or binary read access mode
     FILE* file = fopen(filename, "rb");
     if (file == NULL) {
         perror("Error opening file for CRC32 calculation");
@@ -249,6 +259,8 @@ void SendFile(const char *filename, const char *serverip, int port)
         close(SockFD);
         return;
     }
+
+    //Has a FILE pointer to open files by "rb" or binary read access mode
     file = fopen(filename, "rb");
     if (file == NULL)
     {
@@ -306,7 +318,7 @@ void ReceiveFile(const char *filename, int port)
         return;
     }
 
-    printf("Waiting for incoming connections...\n");
+    printf("Waiting for incoming connections....\n");
 
     NewSockFD = accept(SockFD, (struct sockaddr *)&ClientAddr, &AddrLen);
     if(NewSockFD < 0)
@@ -367,6 +379,7 @@ void StartServer(int port)
     }
 }
 
+//This function builds the user authentication for a login ID before accessing the file management system
 int Authenticator()
 {
     char Username[Max_Username_Length];
@@ -401,6 +414,7 @@ int Authenticator()
     return 0;
 }
 
+//The main function stores all the structures of the functions, a starting point for executing the program
 int main()
 {
     if (!Authenticator())
@@ -419,28 +433,31 @@ int main()
     getcwd(CurrentDirectory, sizeof(CurrentDirectory));
 
     while(1)
-    {
+    {   
+        printf("----------------------------------------------------------------------------------");
         printf("\nFile Management System Program - Current Directory: %s\n", CurrentDirectory);
 
         printf("\n1. Create File\n");
         printf("2. Append File\n");
         printf("3. Copy File\n");
-        printf("4. Delete File\n");
-        printf("5. Read File\n");
-        printf("6. List of Directories\n");
-        printf("7. Change Current Directory Name\n");
-        printf("8. Create New Directory\n");
+        printf("4. Read File\n");
+        printf("5. Delete File\n");
+        printf("6. List of Explorer Contents\n");
+        printf("7. Create New Directory\n");
+        printf("8. Change Current Directory Name\n");
         printf("9. Compare Files (CRC32 Checker)\n");
         printf("10. Start Client (Send Files)\n");
         printf("11. Start Server (Receive Files)\n");
         printf("12. Exit\n");
-        printf("\nEnter a number or choice (1-12): ");
+        printf("----------------------------------------------------------------------------------");
+        printf("\nEnter a number (1-12): ");
         scanf("%d", &Choice);
 
+        //This function allows the user to choose one of the choice numbers only from 1 to 12
         switch (Choice)
         {
             case 1:
-                printf("Enter file type to create (e.g., file.txt, file.bin, file.csv, file.json, file.c): ");
+                printf("Enter file type to create (file.txt, file.bin, file.csv, file.json, file.c, etc): ");
                 scanf("%s", FileName);
                 printf("Enter content(s) inside: ");
                 getchar();
@@ -466,31 +483,31 @@ int main()
                 break;
 
             case 4:
-                printf("Enter a filename to delete: ");
-                scanf("%s", FileName);
-                DeleteFile(FileName);
-                break;
-
-            case 5:
                 printf("Enter a filename to read: ");
                 scanf("%s", FileName);
                 ReadFile(FileName);
                 break;
 
+            case 5:
+                printf("Enter a filename to delete: ");
+                scanf("%s", FileName);
+                DeleteFile(FileName);
+                break;
+
             case 6:
-                ListDirectory();
+                ListContents();
                 break;
 
             case 7:
-                printf("Enter a directory name to change: ");
-                scanf("%s", DirName);
-                ChangeDirectory(DirName);
-                break;
-
-            case 8:
                 printf("Enter a new directory name to create: ");
                 scanf("%s", DirName);
                 CreateDirectory(DirName);
+                break;
+
+            case 8:
+                printf("Enter a directory name to change: ");
+                scanf("%s", DirName);
+                ChangeDirectory(DirName);
                 break;
 
             case 9:
@@ -510,11 +527,11 @@ int main()
                 break;
 
             case 10:
-                StartServer(Server_Port);
+                StartClient(Server_IP, Server_Port);
                 break;
 
             case 11:
-                StartClient(Server_IP, Server_Port);
+                StartServer(Server_Port);
                 break;
 
             case 12:
