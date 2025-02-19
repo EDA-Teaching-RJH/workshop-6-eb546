@@ -85,10 +85,10 @@ void CopyFile(const char *sourcefilename, const char *destfilename)
         return;
     }
 
-    char ch;
-    while ((ch = fgetc(sourcefile)) != EOF)
+    char CH;
+    while ((CH = fgetc(sourcefile)) != EOF)
     {
-        fputc(ch, destfile);
+        fputc(CH, destfile);
     }
     fclose(sourcefile);
     fclose(destfile);
@@ -110,10 +110,10 @@ void ReadFile(const char *filename)
         return;
     }
 
-    char ch;
-    while((ch = fgetc(file)) != EOF)
+    char CH;
+    while((CH = fgetc(file)) != EOF)
     {
-        putchar(ch);
+        putchar(CH);
     }
     fclose(file);
     printf("\nFile '%s' read successfully.\n", filename);
@@ -156,7 +156,7 @@ void ListContents()
     closedir(dir);
 }
 
-//This function alloww to create a new directory of codespace
+//This function allow to create a new directory of codespace
 void CreateDirectory(const char *dirname)
 {
     char DirPath[Max_Path_Length];
@@ -328,6 +328,15 @@ void ReceiveFile(const char *filename, int port)
         return;
     }
 
+    file = fopen(filename, "wb");
+    if (file == NULL)
+    {
+        perror("Error creating file!");
+        close(NewSockFD);
+        close(SockFD);
+        return;
+    }
+
     while((BytesReceived = recv(NewSockFD, Buffer, Buffer_Size, 0)) > 0)
     {
         fwrite(Buffer, 1, BytesReceived, file);
@@ -339,17 +348,17 @@ void ReceiveFile(const char *filename, int port)
     printf("File '%s' received succesfully.\n", filename);
 }
 
-//This function allows to start the client process to transfer files to the server's IP adress and port
+//This function allows to start the client process to transfer files to the server's IP address and port by the void SendFile function
 void StartClient(const char *serverip, int port)
 {
     while(1)
     {
         printf("\nClient is ready to send files....\n");
         char FileName[Max_Filename_Length];
-        printf("Enter filename to send (or 'Exit' to quit): ");
+        printf("Enter filename to send (or 'exit' to quit): ");
         scanf("%s", FileName);
 
-        if(strcmp(FileName, "Exit") == 0)
+        if(strcmp(FileName, "exit") == 0)
         {
             printf("Client shutting down....\n");
             break;
@@ -359,17 +368,17 @@ void StartClient(const char *serverip, int port)
     }
 }
 
-//This function allows to start the server process to receive the file
+//This function allows to start the server process to receive the file by the void ReceiveFile function
 void StartServer(int port)
 {
     while(1)
     {
         printf("\nServer is waiting for files....\n");
         char FileName[Max_Filename_Length];
-        printf("Enter filename to receive and save (or 'Exit' to quit): ");
+        printf("Enter filename to receive and save (or 'exit' to quit): ");
         scanf("%s", FileName);
 
-        if(strcmp(FileName, "Exit") == 0)
+        if(strcmp(FileName, "exit") == 0)
         {
             printf("Server shutting down....\n");
             break;
@@ -394,8 +403,9 @@ int Authenticator()
     printf("Enter your password: ");
     scanf("%s", Password);
 
-    file = fopen("sample.txt", "r");
-    if (file == NULL)
+    //This function allows to read the words from the sample.txt file that contains the username and password in different ways
+    file = fopen("sample.txt", "r"); //e.g (username: eron, password: eb546), (username:ERON, password: EB546), (username: ERON, password: eb546)
+    if (file == NULL)                // (username: Eron, password: eb546), (username: eron, password EB546), (username: Eron, password: EB546)
     {
         perror("Error opening user file!");
         return 0;
