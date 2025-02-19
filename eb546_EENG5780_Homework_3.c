@@ -172,8 +172,8 @@ void CreateDirectory(const char *dirname)
 }
 
 //This function allows to change the name of the current directory of codespace
-void ChangeDirectory(const char *dirname)
-{
+void ChangeDirectory(const char *dirname) //If you want to navigate towards the parent directory, enter "..". To go down, enter the exact same words to avoid an error.
+{                                         //E.g, Enter a directory name to change: .. | Enter a directory name to change: workshop-6-eb546
     char NewPath[Max_Path_Length];
     snprintf(NewPath, sizeof(NewPath), "%s/%s", CurrentDirectory, dirname);
 
@@ -228,7 +228,7 @@ int compare_files_crc(const char* file1, const char* file2) {
 
 //This function allows the client to send files to the server for networking
 void SendFile(const char *filename, const char *serverip, int port)
-{
+{       
     int SockFD;
     struct sockaddr_in ServerAddr;
     FILE *file;
@@ -509,13 +509,13 @@ int main()
                 break;
 
             case 7:
-                printf("Enter a new directory name to create: ");
+                printf("Enter a new directory name in explorer: ");
                 scanf("%s", DirName);
                 CreateDirectory(DirName);
                 break;
 
             case 8:
-                printf("Enter a directory name to change: ");
+                printf("Enter a directory name to navigate down('..' to navigate up): ");
                 scanf("%s", DirName);
                 ChangeDirectory(DirName);
                 break;
