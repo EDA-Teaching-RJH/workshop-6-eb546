@@ -163,11 +163,11 @@ void CreateDirectory(const char *dirname)
     snprintf(DirPath, sizeof(DirPath), "%s/%s", CurrentDirectory, dirname);
 
     if(mkdir(DirPath, 0777) == 0)
-    {
+    {   
         printf("\nDirectory '%s' created successfully.\n", dirname);
-    }else
+    } else
     {
-        perror("Error creating directory!");
+        perror("Error creating directory!\n");
     }
 }
 
@@ -183,7 +183,7 @@ void ChangeDirectory(const char *dirname)
         printf("\nChanged directory to '%s'\n", CurrentDirectory);
     } else
     {
-        perror("Error changing directory!");
+        perror("Error changing directory!\n");
     }
 }
 
@@ -318,7 +318,7 @@ void ReceiveFile(const char *filename, int port)
         return;
     }
 
-    printf("Waiting for incoming connections....\n");
+    printf("Waiting for connections with client....\n");
 
     NewSockFD = accept(SockFD, (struct sockaddr *)&ClientAddr, &AddrLen);
     if(NewSockFD < 0)
@@ -353,7 +353,7 @@ void StartClient(const char *serverip, int port)
 {
     while(1)
     {
-        printf("\nClient is ready to send files....\n");
+        printf("\nClient is ready to send files to server....\n");
         char FileName[Max_Filename_Length];
         printf("Enter filename to send (or 'exit' to quit): ");
         scanf("%s", FileName);
@@ -373,7 +373,7 @@ void StartServer(int port)
 {
     while(1)
     {
-        printf("\nServer is waiting for files....\n");
+        printf("\nServer is waiting for files from client....\n");
         char FileName[Max_Filename_Length];
         printf("Enter filename to receive and save (or 'exit' to quit): ");
         scanf("%s", FileName);
@@ -429,10 +429,10 @@ int main()
 {
     if (!Authenticator())
     {
-        printf("User Authentication failed. Exiting Program\n");
+        printf("User Authentication failed. Incorrect username or password. Exiting Program\n");
         return 1;
     }
-    printf("Authentication Successful!\n");
+    printf("Authentication Granted!\n");
 
     int Choice;
     char FileName[Max_Filename_Length];
@@ -545,7 +545,7 @@ int main()
                 break;
 
             case 12:
-                printf("Exiting Program\n");
+                printf("Shutting Down Program\n");
                 exit(0);
 
             default:
