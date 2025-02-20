@@ -442,6 +442,7 @@ int main()
 
     getcwd(CurrentDirectory, sizeof(CurrentDirectory));
 
+    //This will be in a while loop function unless the user decides to exit the program
     while(1)
     {   
         printf("----------------------------------------------------------------------------------");
