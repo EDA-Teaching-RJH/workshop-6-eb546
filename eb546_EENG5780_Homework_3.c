@@ -39,7 +39,7 @@ void CreateFile(const char *filename, const char *content)
 
     fprintf(file, "%s", content);
     fclose(file);
-    printf("\nFile '%s' created successfully. \n", filename);
+    printf("\nFile '%s' was created successfully. \n", filename);
 
 }
 
@@ -58,7 +58,7 @@ void AppendFile(const char *filename, const char *content)
     }
     fprintf(file, "%s", content);
     fclose(file);
-    printf("\nContent appended to '%s' successfully.\n", filename);
+    printf("\nContent appended to '%s' was successful.\n", filename);
 }
 
 //This void function allows to copy the contents from one file to paste to another
@@ -92,7 +92,7 @@ void CopyFile(const char *sourcefilename, const char *destfilename)
     }
     fclose(sourcefile);
     fclose(destfile);
-    printf("\nFile '%s' copied to '%s' successfully.\n", sourcefilename, destfilename);
+    printf("\nFile '%s' copied to '%s' was successful.\n", sourcefilename, destfilename);
 
 }
 
@@ -116,7 +116,7 @@ void ReadFile(const char *filename)
         putchar(CH);
     }
     fclose(file);
-    printf("\nFile '%s' read successfully.\n", filename);
+    printf("\nFile '%s' was read successfully.\n", filename);
 }
 
 //This function allows to delete any existing files in the current directory
@@ -127,7 +127,7 @@ void DeleteFile(const char *filename)
 
     if (remove(FilePath) == 0)
     {
-        printf("\nFile '%s' deleted successfully.\n", filename);
+        printf("\nFile '%s' was deleted successfully.\n", filename);
 
     } else
     {
@@ -164,7 +164,7 @@ void CreateDirectory(const char *dirname)
 
     if(mkdir(DirPath, 0777) == 0)
     {   
-        printf("\nDirectory '%s' created successfully.\n", dirname);
+        printf("\nDirectory '%s' was created successfully.\n", dirname);
     } else
     {
         perror("Error creating directory!\n");
@@ -193,7 +193,7 @@ uint32_t calculate_crc32(const char* filename) {
     //Has a FILE pointer to open files by "rb" or binary read access mode
     FILE* file = fopen(filename, "rb");
     if (file == NULL) {
-        perror("Error opening file for CRC32 calculation");
+        perror("Error opening file for CRC32 calculation!");
         return 0;
     }
 
@@ -219,7 +219,7 @@ int compare_files_crc(const char* file1, const char* file2) {
     uint32_t crc2 = calculate_crc32(file2);
 
     if (crc1 == 0 || crc2 == 0) {
-        printf("Error calculating CRC32 checksum.\n");
+        printf("Error calculating CRC32 checksum!\n");
         return 0;
     }
 
@@ -279,7 +279,7 @@ void SendFile(const char *filename, const char *serverip, int port)
     }
     fclose(file);
     close(SockFD);
-    printf("File '%s' send successfully.\n", filename);
+    printf("File '%s' was sent successfully.\n", filename);
 }
 
 //This function allows for the server to receive files from the client for networking
@@ -345,7 +345,7 @@ void ReceiveFile(const char *filename, int port)
     fclose(file);
     close(NewSockFD);
     close(SockFD);
-    printf("File '%s' received succesfully.\n", filename);
+    printf("File '%s' was received succesfully.\n", filename);
 }
 
 //This function allows to start the client process to transfer files to the server's IP address and port by the void SendFile function
@@ -429,7 +429,7 @@ int main()
 {
     if (!Authenticator())
     {
-        printf("User Authentication failed. Incorrect username or password. Exiting Program\n");
+        printf("User Authentication failed. Incorrect username or password. Exiting Program.\n");
         return 1;
     }
     printf("Authentication Granted!\n");
