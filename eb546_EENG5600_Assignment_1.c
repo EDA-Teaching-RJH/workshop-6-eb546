@@ -15,23 +15,23 @@ int readin(void)
     note that this function should return the number of
     masses read in from the file */
 
-    int n_masses; //Declare a variable for the user to enter the number of weights as an integer
+    int weight; //Declare a variable for the user to enter the number of weights as an integer
     printf("Enter the number of weights: "); //Prompt the user to ener the number of weights
-    scanf("%d", &n_masses); //To read the number of weights from the user to store it in n_masses
+    scanf("%d", &weight); //To read the number of weights from the user to store it in n_masses
 
-    if (n_masses > MAX) //If the number of weights exceeds the maximum number
+    if (weight > MAX) //If the number of weights exceeds the maximum number
         {
             printf("Error! Number of wights exceeded the maximum limit.\n"); //Prints out an error handling message
             return 0; //Return 0 to indicate an error
         }
 
-    for (int i = 0; i < n_masses; i++) //Loop to read the data for each weight depending the user's number
+    for (int i = 0; i < weight; i++) //Loop to read the data for each weight depending the user's number
         {
             printf("Enter data of weight for each coordinates %d (x_coordinate, y_coordinate, mass): ", i +1); //Prompt the user to enter the data for each coordinates
             scanf("%f %f %f", &masses[i].x, &masses[i].y, &masses[i].mass); //Reads the data of weight for each coordinates to store it in an array
         }
 
-    return n_masses; //Returns a value if the number was read successfuly
+    return weight; //Returns a value if the number was read successfuly
 }
 
 void computecg(int n_masses)
