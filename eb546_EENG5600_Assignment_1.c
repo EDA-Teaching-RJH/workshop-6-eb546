@@ -21,7 +21,7 @@ int readin(void)
 
     if (weight > MAX) //If the number of weights exceeds the maximum number
         {
-            printf("Error! Number of wights exceeded the maximum limit.\n"); //Prints out an error handling message
+            printf("Error! Number of weights exceeded the maximum limit.\n"); //Prints out an error handling message
             return 0; //Return 0 to indicate an error
         }
 
@@ -64,10 +64,10 @@ void computecg(int n_masses)
     
 }
 
-int main(void) //the mai function
+int main(void) //the main function
 {
     int number; //Declare a variable to store the number of weights returned by readin()
     if((number = readin()) > 0) //Using the if function to call int read() to read the data and check if it returns a valid result for weights
-    computecg(number); //Calling void computecg() to proceed its function to calculate and print the center of gravity
+        computecg(number); //Calling void computecg() to proceed its function to calculate and print the center of gravity
     return 0; //Return the 0 value as a success execution for the program
 }
