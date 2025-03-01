@@ -1,5 +1,5 @@
 #include <stdio.h> //Includes the standard input/output library heading
-#define MAX 100 //Defines the constant MAX to represent the macimum number of heights
+#define MAX 100 //Defines the constant MAX to represent the maximum number of weights
 
 
 struct cg 
