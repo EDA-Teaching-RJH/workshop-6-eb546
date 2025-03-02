@@ -30,7 +30,8 @@ int main()
 
    while(1)
    {
-      printf("\mThe following options are available:\n");
+      printf("---------------------------------------------------");
+      printf("\nThe following options are available:\n");
       printf("Read in data [1]\n");
       printf("Print out catalogue to screen [2]\n");
       printf("Save data to file [3]\n");
@@ -52,11 +53,13 @@ int main()
             SaveDataToFile(Catalogue, count);
             break;
          case 4:
-         printf("Existing Program....\n");
+            printf("\nProgram Shutting Down....\n");
+            exit(0);
          default:
-            printf("Invalid choice! Please try again!\n");
+            printf("\nInvalid choice! Please try again!\n");
       }
    }
+   
    return 0;
 }
 
@@ -64,7 +67,7 @@ void ReadData(Song Catalogue[], int *count)
 {
    if(*count >= 100)
    {
-      printf("Catalogue is full!. Cannot add more songs.\n");
+      printf("Catalogue is full! Cannot add more songs.\n");
       return;
    }
 
@@ -72,11 +75,11 @@ void ReadData(Song Catalogue[], int *count)
    fgets(Catalogue[*count].BandName, Max_String_Length, stdin);
    Catalogue[*count].BandName[strcspn(Catalogue[*count].BandName, "\n")] = '\0';
 
-   printf("enter Song Name: ");
+   printf("Enter Song Name: ");
    fgets(Catalogue[*count].SongName, Max_String_Length, stdin);
    Catalogue[*count].SongName[strcspn(Catalogue[*count].SongName, "\n")] = '\0';
 
-   printf("Enter Price: ");
+   printf("Enter Price (Pounds): ");
    scanf("%f", &Catalogue[*count].price);
 
    printf("Enter Year of Release: ");
@@ -84,23 +87,24 @@ void ReadData(Song Catalogue[], int *count)
    getchar();
 
    (*count)++;
-   printf("Song added successfullt!\n");
+   printf("\nSong added successfullt!\n");
 }
 
 void PrintCatalogue(Song Catalogue[], int count)
 {
    if (count == 0)
    {
-      printf("catalogue is empty.\n");
+      printf("\nCatalogue is empty!\n");
       return;
    }
 
+   printf("----------------------------------------------------------------");
    printf("\nCatalogue (Sorted by Year of Release - Newer to Older):\n");
    for(int i; i < count; i++)
    {
       printf("Name of Band/Singer: %s\n", Catalogue[i].BandName);
       printf("Name of Song: %s\n", Catalogue[i].SongName);
-      printf("Price: %.2f\n", Catalogue[i].price);
+      printf("Price: £%.2f\n", Catalogue[i].price);
       printf("Year of Release: %d\n\n", Catalogue[i].year);
    }
 }
@@ -110,7 +114,7 @@ void SaveDataToFile(Song Catalogue[], int count)
    FILE *file = fopen(FILENAME, "w");
    if (file == NULL)
    {
-      printf("Error opening file for writing!\n");
+      printf("\nError opening file for writing!\n");
       return;
    }
 
@@ -123,7 +127,7 @@ void SaveDataToFile(Song Catalogue[], int count)
    }
 
    fclose(file);
-   printf("Data saved to file successfully!\n");
+   printf("\nData saved to file successfully!\n");
 }
 
 void LoadDataFromFile(Song Catalogue[], int *count)
@@ -131,7 +135,7 @@ void LoadDataFromFile(Song Catalogue[], int *count)
    FILE *file = fopen(FILENAME, "r");
    if(file == NULL)
    {
-      printf("No existing catalogue file found! Starting with an empty catalogue.\n");
+      printf("\nNo existing catalogue file found! Starting with an empty catalogue.\n");
       return;
    }
 
@@ -151,7 +155,7 @@ void LoadDataFromFile(Song Catalogue[], int *count)
    }
 
    fclose(file);
-   printf("Data loaded from file successfully!\n");
+   printf("\nData loaded from file successfully!\n");
 }
 
 void SortCatalogueByYear(Song Catalogue[], int count)
