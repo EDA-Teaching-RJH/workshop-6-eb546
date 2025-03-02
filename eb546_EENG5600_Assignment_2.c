@@ -59,7 +59,7 @@ int main()
             printf("\nInvalid choice! Please try again!\n");
       }
    }
-   
+
    return 0;
 }
 
@@ -87,7 +87,7 @@ void ReadData(Song Catalogue[], int *count)
    getchar();
 
    (*count)++;
-   printf("\nSong added successfullt!\n");
+   printf("\nSong added successfully!\n");
 }
 
 void PrintCatalogue(Song Catalogue[], int count)
@@ -120,7 +120,7 @@ void SaveDataToFile(Song Catalogue[], int count)
 
    for(int i = 0; i < count; i++)
    {
-      fprintf(file, "%s\n", Catalogue[i].BandName);
+      fprintf(file, "\n%s\n", Catalogue[i].BandName);
       fprintf(file, "%s\n", Catalogue[i].SongName);
       fprintf(file, "%.2f\n", Catalogue[i].price);
       fprintf(file, "%d\n", Catalogue[i].year);
