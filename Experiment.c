@@ -3,7 +3,7 @@
 #include <string.h>
 
 #define MAX_STRING_LENGTH 100
-#define FILENAME "Catalogue.txt"
+#define FILENAME "catalogue.txt"
 
 // Struct to hold song details
 typedef struct {

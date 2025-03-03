@@ -98,7 +98,7 @@ void PrintCatalogue(Song Catalogue[], int count)
       return;
    }
 
-   printf("----------------------------------------------------------------");
+   printf("--------------------------------------------------------------");
    printf("\nCatalogue (Sorted by Year of Release - Newer to Older):\n");
    for(int i; i < count; i++)
    {
