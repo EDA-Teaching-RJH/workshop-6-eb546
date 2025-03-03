@@ -1,10 +1,13 @@
-#include <stdio.h>
+//Include all the library headers for input, output, and string functions.
+#include <stdio.h> 
 #include <stdlib.h>
 #include <string.h>
 
+//Define the maximum length of strings and have the existing file for saving data
 #define Max_String_Length 100
 #define FILENAME "Catalogue.txt"
 
+//Define a struct function for holding details of a song set by the user
 typedef struct
 {
    char BandName[Max_String_Length]; 
@@ -14,20 +17,22 @@ typedef struct
 
 } Song;
 
-void ReadData(Song Catalogue[], int *count);
-void PrintCatalogue(Song Catalogue[], int count);
-void SaveDataToFile(Song Catalogue[], int count);
-void LoadDataFromFile(Song Catalogue[], int *count);
-void SortCatalogueByYear(Song Catalogue[], int count);
+//Void functions with specified arguements for setting them as a menu choice
+void ReadData(Song Catalogue[], int *count); //This function reads song data from the user
+void PrintCatalogue(Song Catalogue[], int count); //This function prints the saved catalogue to the screen
+void SaveDataToFile(Song Catalogue[], int count); //This function saves catalogue data to a file
+void LoadDataFromFile(Song Catalogue[], int *count); //This function loads the catalogue data from a file
+void SortCatalogueByYear(Song Catalogue[], int count); //This function sorts the catalogue data by year
 
 int main()
 {
-   Song Catalogue[100];
-   int count = 0;
-   int choice;
+   Song Catalogue[100]; //Storing up to 100 songs
+   int count = 0; //Keeps track to how many songs are in the catalogue
+   int choice; //Declare a variable to store the user's menu choice
 
-   LoadDataFromFile(Catalogue, &count);
+   LoadDataFromFile(Catalogue, &count); //Load exisiting data from the exisiting file "Catalogue.txt"
 
+   //Using the while loop function that if its all true, it will proceed to to display the menu options
    while(1)
    {
       printf("---------------------------------------------------");
@@ -40,6 +45,7 @@ int main()
       scanf("%d", &choice);
       getchar();
 
+      //The switch function allows to store the void functions in a correct choice option.
       switch(choice)
       {
          case 1:
@@ -63,33 +69,35 @@ int main()
    return 0;
 }
 
+//This function reads song data from the user
 void ReadData(Song Catalogue[], int *count)
 {
-   if(*count >= 100)
+   if(*count >= 100) //Check if the number of songs reach the maximum limit
    {
       printf("Catalogue is full! Cannot add more songs.\n");
       return;
    }
 
-   printf("Enter Band/Singer Name: ");
-   fgets(Catalogue[*count].BandName, Max_String_Length, stdin);
-   Catalogue[*count].BandName[strcspn(Catalogue[*count].BandName, "\n")] = '\0';
+   printf("Enter Band/Singer Name: "); //Ask the user to enter the name of a band or singer
+   fgets(Catalogue[*count].BandName, Max_String_Length, stdin); //When it reads the strings, it also reads the white spaces from the input to avoid errors
+   Catalogue[*count].BandName[strcspn(Catalogue[*count].BandName, "\n")] = '\0'; //Avoid creating a newline 
 
-   printf("Enter Song Name: ");
-   fgets(Catalogue[*count].SongName, Max_String_Length, stdin);
-   Catalogue[*count].SongName[strcspn(Catalogue[*count].SongName, "\n")] = '\0';
+   printf("Enter Song Name: "); //Ask the user to enter the song's name from that band or singer
+   fgets(Catalogue[*count].SongName, Max_String_Length, stdin); //When it reads the strings, it also reads the white spaces from the input to avoid errors
+   Catalogue[*count].SongName[strcspn(Catalogue[*count].SongName, "\n")] = '\0'; //Avoid creating a newline 
 
-   printf("Enter Price (Pounds): ");
-   scanf("%f", &Catalogue[*count].price);
+   printf("Enter Price (Pounds): "); //Ask the user to enter the price of that song record in pounds
+   scanf("%f", &Catalogue[*count].price); //Enter a decimal number 
 
-   printf("Enter Year of Release: ");
-   scanf("%d", &Catalogue[*count].year);
-   getchar();
+   printf("Enter Year of Release: "); //Ask the user to enter the year when this song was released
+   scanf("%d", &Catalogue[*count].year); //Type as a whole number
+   getchar(); //Reads one character(s) at a time to have the years in order from newer to older
 
-   (*count)++;
-   printf("\nSong added successfully!\n");
+   (*count)++;//Increment the songs count every time the user enters a new song data to the catalogue
+   printf("\nSong added successfully!\n"); //Prints out this message once all the data has been filled
 }
 
+//This function prints the saved catalogue to the screen
 void PrintCatalogue(Song Catalogue[], int count)
 {
    if (count == 0)
@@ -109,15 +117,18 @@ void PrintCatalogue(Song Catalogue[], int count)
    }
 }
 
+//This function saves catalogue data to a file
 void SaveDataToFile(Song Catalogue[], int count)
 {
-   FILE *file = fopen(FILENAME, "w");
+   //Has a FILE pointer to open files by "w" or write access mode
+   FILE *file = fopen(FILENAME, "w"); 
    if (file == NULL)
    {
       printf("\nError opening file for writing!\n");
       return;
    }
 
+   //The for loop saves adn writes each data to the existing filename
    for(int i = 0; i < count; i++)
    {
       fprintf(file, "\n%s\n", Catalogue[i].BandName);
@@ -126,12 +137,14 @@ void SaveDataToFile(Song Catalogue[], int count)
       fprintf(file, "%d\n", Catalogue[i].year);
    }
 
-   fclose(file);
-   printf("\nData saved to file successfully!\n");
+   fclose(file); //Closes the file
+   printf("\nData saved to file successfully!\n"); //Prints out the statement saying that the data has been saved to the file
 }
 
+//This function loads the catalogue data from a file
 void LoadDataFromFile(Song Catalogue[], int *count)
 {
+   //Has a FILE pointer to open files by "r" or read access mode
    FILE *file = fopen(FILENAME, "r");
    if(file == NULL)
    {
@@ -139,7 +152,10 @@ void LoadDataFromFile(Song Catalogue[], int *count)
       return;
    }
 
-   *count = 0;
+   //Resets the counter everytime the catalogue menu program restarts
+   *count = 0; 
+
+   //Reads each song's details from the files
    while(fgets(Catalogue[*count].BandName, Max_String_Length, file))
    {
       Catalogue[*count].BandName[strcspn(Catalogue[*count].BandName, "\n")] = '\0';
@@ -154,18 +170,21 @@ void LoadDataFromFile(Song Catalogue[], int *count)
 
    }
 
-   fclose(file);
-   printf("\nData loaded from file successfully!\n");
+   fclose(file); //Closes the file
+   printf("\nData loaded from file successfully!\n"); //Prints out the statement saying that the data has been loaded from the file
 }
 
+//This function sorts the catalogue data by year
 void SortCatalogueByYear(Song Catalogue[], int count)
 {
+   //Using for loop inner functions for bubble sort to sort the songs by year in descending order
    for(int i = 0; i < count - 1; i++)
    {
       for(int j = 0; j < count - i - 1; j++)
       {
          if(Catalogue[j].year < Catalogue[j + 1].year)
          {
+            //Swap the songs if they are out of order
             Song Temp = Catalogue[j];
             Catalogue[j] = Catalogue[j + 1];
             Catalogue[j + 1] = Temp;
