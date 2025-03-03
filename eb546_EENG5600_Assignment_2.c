@@ -122,7 +122,7 @@ void SaveDataToFile(Song Catalogue[], int count)
    {
       fprintf(file, "\n%s\n", Catalogue[i].BandName);
       fprintf(file, "%s\n", Catalogue[i].SongName);
-      fprintf(file, "%.2f\n", Catalogue[i].price);
+      fprintf(file, "£%.2f\n", Catalogue[i].price);
       fprintf(file, "%d\n", Catalogue[i].year);
    }
 
