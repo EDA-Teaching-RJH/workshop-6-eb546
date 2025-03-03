@@ -78,7 +78,7 @@ void ReadData(Song Catalogue[], int *count)
       return;
    }
 
-   printf("Enter Band/Singer Name: "); //Ask the user to enter the name of a band or singer
+   printf("\nEnter Band/Singer Name: "); //Ask the user to enter the name of a band or singer
    fgets(Catalogue[*count].BandName, Max_String_Length, stdin); //When it reads the strings, it also reads the white spaces from the input to avoid errors
    Catalogue[*count].BandName[strcspn(Catalogue[*count].BandName, "\n")] = '\0'; //Avoid creating a newline 
 
@@ -108,7 +108,8 @@ void PrintCatalogue(Song Catalogue[], int count)
 
    printf("--------------------------------------------------------------");
    printf("\nCatalogue (Sorted by Year of Release - Newer to Older):\n");
-   for(int i; i < count; i++)
+
+   for(int i = 0; i < count; i++)
    {
       printf("Name of Band/Singer: %s\n", Catalogue[i].BandName);
       printf("Name of Song: %s\n", Catalogue[i].SongName);

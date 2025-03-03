@@ -1,23 +1,23 @@
 
 Kendrick Lamar
-Tv Off
-£50.00
+Tv OFF
+£55.00
 2024
+
+Taylor Swift
+Bad Blood
+£35.00
+2016
 
 Linkin Park
 Numb
-£30.00
+£45.00
 2014
 
-Maroon 5
-Payphone
-£20.00
-2010
-
-Queens
-Bohemian Rhapsody
-£35.00
-1989
+Imagine Dragons
+Radioactive
+£55.20
+2012
 
 
 Kendrick Lamar
@@ -25,6 +25,131 @@ Kendrick Lamar
 0
 
 Tv Off
-30.00
+£55.00
+£2018.00
+0
+
+Maroon 5
+Girls like you
+£0.00
+0
+
+£55.00
+2016
+£0.00
+0
+
+Linkin Park
+Numb
+£0.00
+0
+
+£45.00
+2014
+£0.00
+0
+
+Kendrick Lamar
+£0.00
+£0.00
+0
+
+Tv Off
+£50.00
+£0.00
+0
+
 £2024.00
+0
+£0.00
+0
+
+Linkin Park
+Numb
+£0.00
+0
+
+£0.00
+0
+£0.00
+0
+
+£30.00
+2014
+£0.00
+0
+
+£0.00
+0
+£0.00
+0
+
+Maroon 5
+Payphone
+£0.00
+0
+
+£0.00
+0
+£0.00
+0
+
+£20.00
+2010
+£0.00
+0
+
+£0.00
+0
+£0.00
+0
+
+Queens
+Bohemian Rhapsody
+£0.00
+0
+
+£0.00
+0
+£0.00
+0
+
+£35.00
+1989
+£0.00
+0
+
+£0.00
+0
+£0.00
+0
+
+Kendrick Lamar
+£0.00
+£0.00
+0
+
+£0.00
+0
+£0.00
+0
+
+Tv Off
+30.00
+£0.00
+0
+
+£0.00
+0
+£0.00
+0
+
+£2024.00
+0
+£0.00
+0
+
+£0.00
+0
+£0.00
 0
