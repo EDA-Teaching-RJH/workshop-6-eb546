@@ -9,10 +9,10 @@
 
 //Define a struct function for holding details of a song set by the user
 typedef struct {
-    char bandName[MAX_STRING_LENGTH];
-    char songName[MAX_STRING_LENGTH];
-    float price;
-    int year;
+    char BandName[MAX_STRING_LENGTH];
+    char SongName[MAX_STRING_LENGTH];
+    float Price;
+    int Year;
 } Song;
 
 //Void functions with specified arguements for setting them as a menu choice
@@ -73,18 +73,18 @@ void readData(Song catalogue[], int *count) {
     }
 
     printf("\nEnter Band/Singer Name: "); //Ask the user to enter the name of a band or singer
-    fgets(catalogue[*count].bandName, MAX_STRING_LENGTH, stdin); //When it reads the strings, it also reads the white spaces from the input to avoid errors
-    catalogue[*count].bandName[strcspn(catalogue[*count].bandName, "\n")] = '\0'; //Avoid creating a newline 
+    fgets(catalogue[*count].BandName, MAX_STRING_LENGTH, stdin); //When it reads the strings, it also reads the white spaces from the input to avoid errors
+    catalogue[*count].BandName[strcspn(catalogue[*count].BandName, "\n")] = '\0'; //Avoid creating a newline 
 
     printf("Enter Song Name: "); //Ask the user to enter the song's name from that band or singer
-    fgets(catalogue[*count].songName, MAX_STRING_LENGTH, stdin); //When it reads the strings, it also reads the white spaces from the input to avoid errors
-    catalogue[*count].songName[strcspn(catalogue[*count].songName, "\n")] = '\0'; //Avoid creating a newline 
+    fgets(catalogue[*count].SongName, MAX_STRING_LENGTH, stdin); //When it reads the strings, it also reads the white spaces from the input to avoid errors
+    catalogue[*count].SongName[strcspn(catalogue[*count].SongName, "\n")] = '\0'; //Avoid creating a newline 
 
     printf("Enter Price (Pounds): "); //Ask the user to enter the price of that song record in pounds
-    scanf("%f", &catalogue[*count].price); //Enter a decimal number 
+    scanf("%f", &catalogue[*count].Price); //Enter a decimal number 
 
     printf("Enter Year of Release: "); //Ask the user to enter the year when this song was released
-    scanf("%d", &catalogue[*count].year); //Type as a whole number
+    scanf("%d", &catalogue[*count].Year); //Type as a whole number
     getchar(); //Reads one character(s) at a time to have the years in order from newer to older
 
     (*count)++; //Increment the songs count every time the user enters a new song data to the catalogue
@@ -101,10 +101,10 @@ void printCatalogue(Song catalogue[], int count) {
     printf("--------------------------------------------------------------");
     printf("\nCatalogue (Sorted by Year of Release - Newer to Older):\n");
     for (int i = 0; i < count; i++) {
-        printf("\nName of Band/Singer: %s\n", catalogue[i].bandName);
-        printf("Name of Song: %s\n", catalogue[i].songName);
-        printf("Price: £%.2f\n", catalogue[i].price);
-        printf("Year of Release: %d\n\n", catalogue[i].year);
+        printf("\nName of Band/Singer: %s\n", catalogue[i].BandName);
+        printf("Name of Song: %s\n", catalogue[i].SongName);
+        printf("Price: £%.2f\n", catalogue[i].Price);
+        printf("Year of Release: %d\n\n", catalogue[i].Year);
     }
 }
 
@@ -120,10 +120,10 @@ void saveDataToFile(Song catalogue[], int count) {
 
     //The for loop saves adn writes each data to the existing filename
     for (int i = 0; i < count; i++) {
-        fprintf(file, "\n%s\n", catalogue[i].bandName);
-        fprintf(file, "%s\n", catalogue[i].songName);
-        fprintf(file, "£%.2f\n", catalogue[i].price);
-        fprintf(file, "%d\n", catalogue[i].year);
+        fprintf(file, "\n%s\n", catalogue[i].BandName);
+        fprintf(file, "%s\n", catalogue[i].SongName);
+        fprintf(file, "£%.2f\n", catalogue[i].Price);
+        fprintf(file, "%d\n", catalogue[i].Year);
     }
 
     fclose(file); //Closes the file
@@ -143,14 +143,14 @@ void loadDataFromFile(Song catalogue[], int *count) {
     *count = 0; //Resets the counter everytime the catalogue menu program restarts
 
     //Reads each song's details from the files
-    while (fgets(catalogue[*count].bandName, MAX_STRING_LENGTH, file)) {
-        catalogue[*count].bandName[strcspn(catalogue[*count].bandName, "\n")] = '\0'; // Remove newline
+    while (fgets(catalogue[*count].BandName, MAX_STRING_LENGTH, file)) {
+        catalogue[*count].BandName[strcspn(catalogue[*count].BandName, "\n")] = '\0'; // Remove newline
 
-        fgets(catalogue[*count].songName, MAX_STRING_LENGTH, file);
-        catalogue[*count].songName[strcspn(catalogue[*count].songName, "\n")] = '\0'; // Remove newline
+        fgets(catalogue[*count].SongName, MAX_STRING_LENGTH, file);
+        catalogue[*count].SongName[strcspn(catalogue[*count].SongName, "\n")] = '\0'; // Remove newline
 
-        fscanf(file, "%f\n", &catalogue[*count].price);
-        fscanf(file, "%d\n", &catalogue[*count].year);
+        fscanf(file, "%f\n", &catalogue[*count].Price);
+        fscanf(file, "%d\n", &catalogue[*count].Year);
         (*count)++;
     }
 
@@ -164,12 +164,12 @@ void sortCatalogueByYear(Song catalogue[], int count) {
     //Using for loop inner functions for bubble sort to sort the songs by year in descending order
     for (int i = 0; i < count - 1; i++) {
         for (int j = 0; j < count - i - 1; j++) {
-            if (catalogue[j].year < catalogue[j + 1].year) {
+            if (catalogue[j].Year < catalogue[j + 1].Year) {
                 
                 //Swap the songs if they are out of order
-                Song temp = catalogue[j];
+                Song Temp = catalogue[j];
                 catalogue[j] = catalogue[j + 1];
-                catalogue[j + 1] = temp;
+                catalogue[j + 1] = Temp;
             }
         }
     }
