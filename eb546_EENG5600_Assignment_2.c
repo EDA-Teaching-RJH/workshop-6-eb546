@@ -74,11 +74,11 @@ void readData(Song catalogue[], int *count) {
 
     printf("\nEnter Band/Singer Name: "); //Ask the user to enter the name of a band or singer
     fgets(catalogue[*count].BandName, MAX_STRING_LENGTH, stdin); //When it reads the strings, it also reads the white spaces from the input to avoid errors
-    catalogue[*count].BandName[strcspn(catalogue[*count].BandName, "\n")] = '\0'; //Avoid creating a newline 
+    catalogue[*count].BandName[strcspn(catalogue[*count].BandName, "\n")] = '\0'; //Removes a newline character with a null terminator
 
     printf("Enter Song Name: "); //Ask the user to enter the song's name from that band or singer
     fgets(catalogue[*count].SongName, MAX_STRING_LENGTH, stdin); //When it reads the strings, it also reads the white spaces from the input to avoid errors
-    catalogue[*count].SongName[strcspn(catalogue[*count].SongName, "\n")] = '\0'; //Avoid creating a newline 
+    catalogue[*count].SongName[strcspn(catalogue[*count].SongName, "\n")] = '\0'; //Removes a newline character with a null terminator
 
     printf("Enter Price (Pounds): "); //Ask the user to enter the price of that song record in pounds
     scanf("%f", &catalogue[*count].Price); //Enter a decimal number 
@@ -93,14 +93,14 @@ void readData(Song catalogue[], int *count) {
 
 //This function prints the saved catalogue to the screen
 void printCatalogue(Song catalogue[], int count) {
-    if (count == 0) {
-        printf("Catalogue is empty.\n");
+    if (count == 0) { // If there aren't songs in the catalogue
+        printf("Catalogue is empty.\n"); //Prints out a statement saying the catalogue is empty
         return;
     }
 
     printf("--------------------------------------------------------------");
     printf("\nCatalogue (Sorted by Year of Release - Newer to Older):\n");
-    for (int i = 0; i < count; i++) {
+    for (int i = 0; i < count; i++) { //The for loop prints the the details depending the number of songs entered to the catalogue file
         printf("\nName of Band/Singer: %s\n", catalogue[i].BandName);
         printf("Name of Song: %s\n", catalogue[i].SongName);
         printf("Price: £%.2f\n", catalogue[i].Price);
@@ -113,8 +113,8 @@ void saveDataToFile(Song catalogue[], int count) {
     
     //Has a FILE pointer to open files by "w" or write access mode
     FILE *file = fopen(FILENAME, "w");
-    if (file == NULL) {
-        printf("\nError opening file for writing!\n");
+    if (file == NULL) { //If there is no file in the memory address
+        printf("\nError opening file for writing!\n"); //Prints out a message regarding an empty data storage
         return;
     }
 
@@ -135,19 +135,19 @@ void loadDataFromFile(Song catalogue[], int *count) {
     
     //Has a FILE pointer to open files by "r" or read access mode
     FILE *file = fopen(FILENAME, "r");
-    if (file == NULL) {
-        printf("\nNo existing catalogue file found! Starting with an empty catalogue.\n");
+    if (file == NULL) { //If there is no file in the memory address
+        printf("\nNo existing catalogue file found! Starting with an empty catalogue.\n"); //Prints out a message regarding an empty data storage
         return;
     }
 
     *count = 0; //Resets the counter everytime the catalogue menu program restarts
 
     //Reads each song's details from the files
-    while (fgets(catalogue[*count].BandName, MAX_STRING_LENGTH, file)) {
-        catalogue[*count].BandName[strcspn(catalogue[*count].BandName, "\n")] = '\0'; // Remove newline
+    while (fgets(catalogue[*count].BandName, MAX_STRING_LENGTH, file)) { //When it reads the strings, it also reads the white spaces from the input to avoid errors
+        catalogue[*count].BandName[strcspn(catalogue[*count].BandName, "\n")] = '\0'; //Removes a newline character with a null terminator
 
-        fgets(catalogue[*count].SongName, MAX_STRING_LENGTH, file);
-        catalogue[*count].SongName[strcspn(catalogue[*count].SongName, "\n")] = '\0'; // Remove newline
+        fgets(catalogue[*count].SongName, MAX_STRING_LENGTH, file); //When it reads the strings, it also reads the white spaces from the input to avoid errors
+        catalogue[*count].SongName[strcspn(catalogue[*count].SongName, "\n")] = '\0'; //Removes a newline character with a null terminator
 
         fscanf(file, "%f\n", &catalogue[*count].Price);
         fscanf(file, "%d\n", &catalogue[*count].Year);
