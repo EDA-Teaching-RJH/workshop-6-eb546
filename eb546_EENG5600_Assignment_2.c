@@ -38,7 +38,7 @@ int main() {
         printf("Print out catalogue to screen [2]\n");
         printf("Save data to file [3]\n");
         printf("Exit Program [4]\n");
-        printf("Enter your choice now: ");
+        printf("\nEnter your choice now: ");
         scanf("%d", &choice);
         getchar(); // Consume newline character left by scanf
 
@@ -94,7 +94,7 @@ void readData(Song catalogue[], int *count) {
 //This function prints the saved catalogue to the screen
 void printCatalogue(Song catalogue[], int count) {
     if (count == 0) { // If there aren't songs in the catalogue
-        printf("Catalogue is empty.\n"); //Prints out a statement saying the catalogue is empty
+        printf("\nCatalogue is empty.\n"); //Prints out a statement saying the catalogue is empty
         return;
     }
 
