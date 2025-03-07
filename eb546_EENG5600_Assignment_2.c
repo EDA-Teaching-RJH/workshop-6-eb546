@@ -162,11 +162,11 @@ void loadDataFromFile(Song catalogue[], int *count) {
 void sortCatalogueByYear(Song catalogue[], int count) {
     
     //Using for loop inner functions for bubble sort to sort the songs by year in descending order
-    for (int i = 0; i < count - 1; i++) {
-        for (int j = 0; j < count - i - 1; j++) {
-            if (catalogue[j].Year < catalogue[j + 1].Year) {
+    for (int i = 0; i < count - 1; i++) { //Checks through the songs's details 
+        for (int j = 0; j < count - i - 1; j++) { //Checks only once
+            if (catalogue[j].Year < catalogue[j + 1].Year) { //Compares the years for each details
                 
-                //Swap the songs if they are out of order
+                //Swap the songs by the number of years from newest to oldest
                 Song Temp = catalogue[j];
                 catalogue[j] = catalogue[j + 1];
                 catalogue[j + 1] = Temp;
